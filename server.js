@@ -22,13 +22,15 @@ app.get('/api/hello', function(req, res) {
 });
 */
 
-app.use(bodyParser.urlencoded({extended: false}));
+// To get url from input tag
+app.use(bodyParser.urlencoded({extended: true}));
 
-app.post("api/shorturl", (req, res)=>{
-  let txts = req.body.url;
-  res.send(txts)
-})
+app.post("/api/shorturl", (req, res)=>{
+  res.json({value: req.body.url});
+});
+
 
 app.listen(port, function() {
   console.log(`Listening on port ${port}`);
 });
+
