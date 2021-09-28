@@ -28,30 +28,46 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // To check url validity as "http://www.example.com"
 function checkValidity(arg){
-  let res = arg.match(/\w+./g);
+  /*let res = arg.match(/\w+./g);
   console.log(res[0]);
   if(res[0] === "http:" || res[0] === "https:" || res[0] === "ftp:"){
     return true;
   }
   else{
     return false;
+  }*/
+  let newUrl;
+  try{
+    newUrl = new URL(arg);
   }
+  catch{
+    return false;
+  }
+  console.log("host name : " + newUrl.hostname);
+  console.log("path name : " + newUrl.pathname);
+  console.log("protocol : " + newUrl.protocol);
+  // Next time use xhr method to post url (check availability) from ajax
+
+  return true;
+  /*let arr = newUrl.hostname.match(/\w+./g);
+  console.log(arr);
+  if((arr.length > 2)?(arr[0] === "www."):(true)){
+    return true;
+  }*/
 }
 
 app.post("/api/shorturl", (req, res)=>{
+  console.log();
   urlResult = req.body.url;
-  checkValidity(urlResult);
   if(checkValidity(urlResult)){
-    const  domain = new URL(urlResult);
     console.log("There is a website");
+    /*const  domain = new URL(urlResult);
     console.log(domain.hostname);
-    console.log(domain.pathname);
-    console.log(domain.protocol);
     // To check url's hostname and address
     dns.lookup(domain.hostname, (err, address, family)=>{
       console.log(family);
       console.log(address);
-    });
+    });*/
     res.json({original_url: req.body.url});
   }
   else{
