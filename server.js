@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const dns = require("dns");
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -28,14 +29,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // To check url validity as "http://www.example.com"
 function checkValidity(arg){
-  /*let res = arg.match(/\w+./g);
-  console.log(res[0]);
-  if(res[0] === "http:" || res[0] === "https:" || res[0] === "ftp:"){
-    return true;
-  }
-  else{
-    return false;
-  }*/
   let newUrl;
   try{
     newUrl = new URL(arg);
@@ -43,17 +36,18 @@ function checkValidity(arg){
   catch{
     return false;
   }
-  console.log("host name : " + newUrl.hostname);
-  console.log("path name : " + newUrl.pathname);
-  console.log("protocol : " + newUrl.protocol);
-  // Next time use xhr method to post url (check availability) from ajax
-
-  return true;
-  /*let arr = newUrl.hostname.match(/\w+./g);
-  console.log(arr);
-  if((arr.length > 2)?(arr[0] === "www."):(true)){
+  console.log(newUrl.host);
+  if((/^http(s)?:\/\//).test(arg)){
+    let fHost1 = newUrl.host;
+    console.log(fHost1.includes("www."));
+    console.log(fHost1.includes(".com"));
+    console.log(fHost1.includes(".co."));
+    console.log(fHost1.match(/\w+\./g));
+    console.log(fHost1.match(/\w+\./g).length);
+    console.log((/^.\w+/g).test(fHost1));
+    console.log(fHost1.match(/^.\w+/g));
     return true;
-  }*/
+   }
 }
 
 app.post("/api/shorturl", (req, res)=>{
