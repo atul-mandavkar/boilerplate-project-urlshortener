@@ -6,6 +6,7 @@ const app = express();
 const dns = require("dns");
 const urlparsed = require("url");
 const mongoose = require("mongoose");
+const {Schema} = require("mongoose");
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -20,6 +21,16 @@ app.get('/', function(req, res) {
 
 // To connect url to app via mongoose
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// To create schema for database for that first require {Scema} from monhoose module
+const urlSchema = new Schema({
+  original_url: {type: String, require: true},
+  short_url: Number
+});
+
+// Now creating model in database of this schema
+
+let url_data = mongoose.model("url_data", urlSchema);
 
 /*
 // Your first API endpoint
