@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const dns = require("dns");
 const urlparsed = require("url");
+const mongoose = require("mongoose");
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -16,6 +17,10 @@ app.use('/public', express.static(`${process.cwd()}/public`));
 app.get('/', function(req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
+
+// To connect url to app via mongoose
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+
 /*
 // Your first API endpoint
 app.get('/api/hello', function(req, res) {
